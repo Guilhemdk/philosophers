@@ -1,4 +1,14 @@
-#include "../inc/philo.h"
+#include "../includes/philo.h"
+
+void	*safe_malloc(size_t bytes)
+{
+	void	*res;
+
+	res = malloc(bytes);
+	if(res == NULL)
+		error(MALLOC_ERR);
+	return (res);
+}
 
 int ft_isnbr(char *str)
 {
