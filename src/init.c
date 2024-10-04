@@ -39,11 +39,12 @@ void init_program(t_program *program)
 	int i;
 
 	i = -1;
+	program->threads_running = 0;
+	program->all_threads_ready = 0;
 	program->end_flag = 0;
 	program->philo = safe_malloc(sizeof(t_philo) * program->nbr_of_philos);
 	program->forks = safe_malloc(sizeof(t_fork) * program->nbr_of_philos);
-	program->start_flag = 0;
-	mutex_handler(&program->read_lock, INIT);
+	mutex_handler(&program->program_lock, INIT);
 	mutex_handler(&program->write_lock, INIT);
 	while(++i < program->nbr_of_philos)
 	{

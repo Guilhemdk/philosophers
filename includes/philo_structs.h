@@ -10,7 +10,6 @@ typedef enum e_timecode
 	SECONDS,
 	MILLISECONDS,
 	MICROSECONDS,
-	NANOSECONDS,
 } t_timecode;
 
 typedef enum e_status
@@ -56,16 +55,16 @@ typedef struct s_philo
 typedef struct s_program
 {
     int end_flag;
-	int start_flag;
+	int		all_threads_ready;
     int nbr_of_philos;
+	long	threads_running;
     long	start_time;
     long	time_to_die;
     long	time_to_eat;
     long	time_to_sleep;
     long	max_eat_count;
-	long	threads_running;
 	pthread_t		The_reaper;
-	pthread_mutex_t read_lock;
+	pthread_mutex_t program_lock;
     pthread_mutex_t write_lock;
 	t_fork		*forks;
     t_philo     *philo;

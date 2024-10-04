@@ -60,6 +60,6 @@ void mutex_handler(pthread_mutex_t *mutex, t_mutexOps op)
 void	increase_threads(pthread_mutex_t *mutex, long *value)
 {
 	mutex_handler(mutex, LOCK);
-	value++;
+	(*value)++;
 	mutex_handler(mutex, UNLOCK);
 }

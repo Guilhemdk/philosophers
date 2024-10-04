@@ -18,7 +18,7 @@ void clean_up(t_program *program)
 		philo = program->philo + i;
 		mutex_handler(&philo->philo_lock, DESTROY);
 	}
-	mutex_handler(&program->read_lock, DESTROY);
+	mutex_handler(&program->program_lock, DESTROY);
 	mutex_handler(&program->write_lock, DESTROY);
 	free(program->forks);
 	free(program->philo);

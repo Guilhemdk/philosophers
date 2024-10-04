@@ -15,7 +15,7 @@ void		think(t_philo *philo, int pre_synchronizer)
 	t_think = t_eat * 2 - t_sleep;
 	if (t_think < 0)
 		t_think = 0;
-	ft_usleep(t_think * 0.3, philo->program);
+	ft_usleep(t_think * 0.42, philo->program);
 }
 
 static void		eat(t_philo *philo)
@@ -25,7 +25,8 @@ static void		eat(t_philo *philo)
 	mutex_handler(&philo->second_fork->fork, LOCK);
 	write_status(TAKE_SECOND_FORK, philo);
 	mutex_set_long(&philo->philo_lock, &philo->last_meal,
-			get_time());
+			get_time(MILLISECONDS));
+	philo->meals_eaten++;
 	write_status(EATING, philo);
 	ft_usleep(philo->program->time_to_eat, philo->program);
 	if ((philo->program->max_eat_count >= 0)
@@ -42,15 +43,12 @@ void	*philo_hermite(void *arg)
 	philo= (t_philo *)arg;
 	wait_all_threads(philo->program);
 	mutex_set_long(&philo->philo_lock, &philo->last_meal,
-			get_time());
-	increase_threads(&philo->program->read_lock,
+			get_time(MILLISECONDS));
+	increase_threads(&philo->program->program_lock,
 			&philo->program->threads_running);
 	write_status(TAKE_FIRST_FORK, philo);
 	while(!end_of_simulation(philo->program))
-	{
-		printf("sleeping\n");
-		sleep(1);
-	}
+		usleep(200);
 	return (NULL);
 }
 
@@ -61,17 +59,14 @@ void	*dinner_simulation(void *data)
 	philo = (t_philo *)data;
 	wait_all_threads(philo->program);
 	mutex_set_long(&philo->philo_lock, &philo->last_meal,
-			get_time());
-	increase_threads(&philo->program->read_lock,
+			get_time(MILLISECONDS));
+	increase_threads(&philo->program->program_lock,
 			&philo->program->threads_running);
 	desynchronize_philos(philo);
 	while(!(end_of_simulation(philo->program)))
 	{
 		if(philo->full)
-		{
-			printf("philo is full\n");
 			break;
-		}
 		eat(philo);
 		write_status(SLEEPING, philo);
 		ft_usleep(philo->program->time_to_sleep,
@@ -98,13 +93,13 @@ void	start_dinner(t_program *program)
 					CREATE);
 	thread_handler(&program->The_reaper, fk_em_up,
 			program, CREATE);
-	program->start_time = get_time();
-	mutex_set_int(&program->read_lock,
-			&program->start_flag, 1);
+	program->start_time = get_time(MILLISECONDS);
+	mutex_set_int(&program->program_lock,
+			&program->all_threads_ready, 1);
 	i = -1;
 	while (++i < program->nbr_of_philos)
 		thread_handler(&program->philo[i].thread_id,
 				NULL, NULL, JOIN);
-	mutex_set_int(&program->read_lock, &program->end_flag, 1);
+	mutex_set_int(&program->program_lock, &program->end_flag, 1);
 	thread_handler(&program->The_reaper, NULL, NULL, JOIN);
 }

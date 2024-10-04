@@ -31,11 +31,11 @@ void mutex_set_long(pthread_mutex_t *mutex, long *dest, long value);
 
 void	wait_all_threads(t_program *program);
 
-long	get_time(void);
+long	get_time(t_timecode tcode);
 void	ft_usleep(long usec, t_program *program);
 void	write_status(t_status status, t_philo *philo);
 void		increase_threads(pthread_mutex_t *mutex, long *value);
-int			all_all_threads_ready(pthread_mutex_t *mutex, long *threads, long philo_nbr);
+int			all_threads_ready(pthread_mutex_t *mutex, long *threads, long philo_nbr);
 void		*fk_em_up(void *data);
 void		clean_up(t_program *program);
 void		think(t_philo *philo, int pre_synchronizer);
