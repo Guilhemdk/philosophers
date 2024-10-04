@@ -17,9 +17,9 @@ void mutex_set_int(pthread_mutex_t *mutex, int *dest, int value)
 	mutex_handler(mutex, UNLOCK);
 }
 
-size_t mutex_get_size_t(pthread_mutex_t *mutex, size_t *value)
+size_t mutex_get_long(pthread_mutex_t *mutex, long *value)
 {
-	size_t res;
+	long res;
 
 	mutex_handler(mutex, LOCK);
 	res = *value;
@@ -27,7 +27,7 @@ size_t mutex_get_size_t(pthread_mutex_t *mutex, size_t *value)
 	return (res);
 }
 
-void mutex_set_size_t(pthread_mutex_t *mutex, size_t *dest, size_t value)
+void mutex_set_long(pthread_mutex_t *mutex, long *dest, long value)
 {
 	mutex_handler(mutex, LOCK);
 	*dest = value;

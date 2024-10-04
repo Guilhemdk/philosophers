@@ -8,7 +8,7 @@ static void handle_thread_error(int status, t_mutexOps op)
 		error("No ressources to create another thread");
 	else if (status == EINVAL && op == CREATE)
 		error("the value specified by attribute is invalid");
-	else if (status == EINVAL && (op == JOIN || op == DETACH))
+	else if (status == EINVAL && op == JOIN )
 		error("The value specified by the thread is not joinable");
 	else if (status == ESRCH)
 		error("No thread could be found corresponding to that");
@@ -47,12 +47,19 @@ void mutex_handler(pthread_mutex_t *mutex, t_mutexOps op)
 {
 	if(op == LOCK)
 		handle_mutex_error(pthread_mutex_lock(mutex), op);
-	if(op == UNLOCK)
+	else if(op == UNLOCK)
 		handle_mutex_error(pthread_mutex_unlock(mutex), op);
-	if (op == INIT)
+	else if (op == INIT)
 		handle_mutex_error(pthread_mutex_init(mutex, NULL), op);
-	if(op == DESTROY)
+	else if(op == DESTROY)
 		handle_mutex_error(pthread_mutex_destroy(mutex), op);
 	else
 		error(MUTEX_OP);
+}
+
+void	increase_threads(pthread_mutex_t *mutex, long *value)
+{
+	mutex_handler(mutex, LOCK);
+	value++;
+	mutex_handler(mutex, UNLOCK);
 }

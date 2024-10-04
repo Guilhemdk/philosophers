@@ -1,16 +1,27 @@
 #ifndef PHILO_STRUCTS_H
 # define PHILO_STRUCTS_H
 
-#include "philo.h"
+# include <pthread.h>
 
 struct s_program;
 
-typedef enum e_time_code
+typedef enum e_timecode
 {
-	SECOND,
-	MILLISECOND,
-	MICROSECOND,
-}			t_time_code;
+	SECONDS,
+	MILLISECONDS,
+	MICROSECONDS,
+	NANOSECONDS,
+} t_timecode;
+
+typedef enum e_status
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	TAKE_FIRST_FORK,
+	TAKE_SECOND_FORK,
+	DIED
+}			t_status;
 
 typedef enum e_mutexOps
 {
@@ -19,7 +30,7 @@ typedef enum e_mutexOps
 	INIT,
 	DESTROY,
 	CREATE,
-	JOIN
+	JOIN,
 }			t_mutexOps;
 
 typedef struct s_fork
@@ -30,34 +41,32 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-    pthread_t   thread_id;
-    int         id;
-    int         eating;
-    int meals_eaten;
-    size_t last_meal;
-    int *dead;
-	struct s_program *program;
-    t_fork		*first_fork;
-    t_fork		*second_fork;
-    pthread_mutex_t *write_lock;
-    pthread_mutex_t *dead_lock;
-    pthread_mutex_t *meal_lock;
+    pthread_t		thread_id;
+    int				id;
+    int				eating;
+    int				meals_eaten;
+    long			last_meal;
+    int				full;
+	struct			s_program *program;
+    t_fork			*first_fork;
+    t_fork			*second_fork;
+	pthread_mutex_t philo_lock;
 }       t_philo;
 
 typedef struct s_program
 {
-    int dead_flag;
+    int end_flag;
 	int start_flag;
     int nbr_of_philos;
-    size_t start_time;
-    size_t time_to_die;
-    size_t time_to_eat;
-    size_t time_to_sleep;
+    long	start_time;
+    long	time_to_die;
+    long	time_to_eat;
+    long	time_to_sleep;
     long	max_eat_count;
+	long	threads_running;
+	pthread_t		The_reaper;
 	pthread_mutex_t read_lock;
-    pthread_mutex_t dead_lock;
     pthread_mutex_t write_lock;
-    pthread_mutex_t meal_lock;
 	t_fork		*forks;
     t_philo     *philo;
 }               t_program;
