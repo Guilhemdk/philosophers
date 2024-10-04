@@ -89,12 +89,12 @@ void	start_dinner(t_program *program)
 		while (++i < program->nbr_of_philos)
 			thread_handler(&program->philo[i].thread_id, dinner_simulation,
 				&program->philo[i], CREATE);
-	thread_handler(&program->The_reaper, fk_em_up, program, CREATE);
+	thread_handler(&program->the_reaper, fk_em_up, program, CREATE);
 	program->start_time = get_time(MILLISECONDS);
 	mutex_set_int(&program->program_lock, &program->all_threads_ready, 1);
 	i = -1;
 	while (++i < program->nbr_of_philos)
 		thread_handler(&program->philo[i].thread_id, NULL, NULL, JOIN);
 	mutex_set_int(&program->program_lock, &program->end_flag, 1);
-	thread_handler(&program->The_reaper, NULL, NULL, JOIN);
+	thread_handler(&program->the_reaper, NULL, NULL, JOIN);
 }

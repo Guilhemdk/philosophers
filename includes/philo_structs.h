@@ -63,7 +63,7 @@ typedef struct s_program
 	long				time_to_eat;
 	long				time_to_sleep;
 	long				max_eat_count;
-	pthread_t			The_reaper;
+	pthread_t			the_reaper;
 	pthread_mutex_t		program_lock;
 	pthread_mutex_t		write_lock;
 	t_fork				*forks;
