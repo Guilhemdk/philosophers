@@ -27,6 +27,14 @@ INCS 		= -I$(INC_DIR)
 TOTAL_FILES 	:= $(words $(SRCS))
 CURRENT_FILE  	:= 0
 
+ASCII_LOGO=  "\033[0;35m ██████╗ ██╗  ██╗██╗██╗      ██████╗ \n\
+             \033[0;35m██╔══██╗██║  ██║██║██║     ██╔═══██╗\n\
+             \033[0;35m██████╔╝███████║██║██║     ██║   ██║\n\
+             \033[0;35m██╔═══╝ ██╔══██║██║██║     ██║   ██║\n\
+             \033[0;35m██║     ██║  ██║██║███████╗╚██████╔╝\n\
+             \033[0;35m╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ \n\
+             \033[0m\n"
+
 define progress_bar
 	@$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	@printf "\r$(YELLOW)Compiling push_swap... [%-$(TOTAL_FILES)s] %d/%d $(NC)" \
@@ -46,6 +54,7 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)Linking objects to create executable...$(NC)"
 	@$(CC) $(OBJS) -o $(NAME) $(LDFLAGS) -fsanitize=thread
 	@echo "$(GREEN)Executable $(NAME) created!$(NC)"
+	@printf $(ASCII_LOGO)
 
 clean:
 	@$(RM) $(OBJS)

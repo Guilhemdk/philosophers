@@ -1,8 +1,8 @@
 #include "../includes/philo.h"
 
-static void assign_forks(t_philo *philo, t_fork *fork, int i)
+static void	assign_forks(t_philo *philo, t_fork *fork, int i)
 {
-	int total_philos;
+	int	total_philos;
 
 	total_philos = philo->program->nbr_of_philos;
 	philo->first_fork = &fork[(i + 1) % total_philos];
@@ -12,13 +12,12 @@ static void assign_forks(t_philo *philo, t_fork *fork, int i)
 		philo->first_fork = &fork[i];
 		philo->second_fork = &fork[(i + 1) % total_philos];
 	}
-
 }
 
-static void init_philo(t_program *program)
+static void	init_philo(t_program *program)
 {
 	int		i;
-	t_philo *philo;
+	t_philo	*philo;
 
 	i = -1;
 	while (++i < program->nbr_of_philos)
@@ -31,12 +30,11 @@ static void init_philo(t_program *program)
 		mutex_handler(&philo->philo_lock, INIT);
 		assign_forks(philo, program->forks, i);
 	}
-
 }
 
-void init_program(t_program *program)
+void	init_program(t_program *program)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	program->threads_running = 0;
@@ -46,7 +44,7 @@ void init_program(t_program *program)
 	program->forks = safe_malloc(sizeof(t_fork) * program->nbr_of_philos);
 	mutex_handler(&program->program_lock, INIT);
 	mutex_handler(&program->write_lock, INIT);
-	while(++i < program->nbr_of_philos)
+	while (++i < program->nbr_of_philos)
 	{
 		mutex_handler(&program->forks[i].fork, INIT);
 		program->forks[i].fork_id = i;
@@ -54,14 +52,13 @@ void init_program(t_program *program)
 	init_philo(program);
 }
 
-void desynchronize_philos(t_philo *philo)
+void	desynchronize_philos(t_philo *philo)
 {
 	if (philo->program->nbr_of_philos % 2 == 0)
 	{
-		if(philo->id % 2 == 0)
+		if (philo->id % 2 == 0)
 			ft_usleep(3e4, philo->program);
 	}
-	else
-		if(philo->id % 2 != 0)
-			think(philo, 1);
+	else if (philo->id % 2 != 0)
+		think(philo, 1);
 }

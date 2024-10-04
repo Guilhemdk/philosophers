@@ -1,5 +1,5 @@
 #ifndef MACROS_H
-#define MACROS_H
+# define MACROS_H
 
 # define MALLOC_ERR "Error mallocing data\n"
 # define THREAD_CREATION_ERR "Error creating thread\n"

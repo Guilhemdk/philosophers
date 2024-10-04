@@ -1,13 +1,13 @@
 #include "../includes/philo.h"
 
-void clean_up(t_program *program)
+void	clean_up(t_program *program)
 {
-	t_philo *philo;
-	t_fork *fork;
-	int i;
+	t_philo	*philo;
+	t_fork	*fork;
+	int		i;
 
 	i = -1;
-	while(++i < program->nbr_of_philos)
+	while (++i < program->nbr_of_philos)
 	{
 		fork = program->forks + i;
 		mutex_handler(&fork->fork, DESTROY);
@@ -26,7 +26,7 @@ void clean_up(t_program *program)
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	if(!s || fd < 0)
+	if (!s || fd < 0)
 		return ;
 	if (s)
 	{
@@ -35,20 +35,20 @@ void	ft_putendl_fd(char *s, int fd)
 	}
 }
 
-void error(char *message)
+void	error(char *message)
 {
-    ft_putendl_fd(message, 2);
-    exit(1);
+	ft_putendl_fd(message, 2);
+	exit(1);
 }
 
-int free_and_error(t_program *program)
+int	free_and_error(t_program *program)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (program)
 	{
-		while(program->philo)
+		while (program->philo)
 			free(&program->philo[i++]);
 		free(program);
 	}
